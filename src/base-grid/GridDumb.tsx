@@ -97,35 +97,37 @@ export class GridDumb extends React.Component<IProps, IState> {
       this.props.dragStart?.(col, row);
     };
     return (
-      <div className={styles.Grid} ref={(ref) => ref && (this.gridRef = ref)}>
-        {grid.map((col, collIndex) => (
-          <div key={collIndex} className={styles.row}>
-            {col.map((_item, rowIndex) => (
-              <div
-                key={rowIndex}
-                className={
-                  styles.col + ' ' + colorClassForPosition(collIndex, rowIndex)
-                }
-                onMouseEnter={() => {
-                  dragEnter(collIndex, rowIndex);
-                }}
-                onMouseDown={(event) => {
-                  dragStart(collIndex, rowIndex);
-                  event.preventDefault();
-                }}
-                onTouchStart={() => {
-                  dragStart(collIndex, rowIndex);
-                }}
-                onMouseUp={() => {
-                  this.isDragging = false;
-                }}
-              />
-            ))}
-          </div>
-        ))}
+      <div className={styles.gridContainer}>
+        <div className={styles.Grid} ref={(ref) => ref && (this.gridRef = ref)}>
+          {grid.map((col, collIndex) => (
+            <div key={collIndex} className={styles.row}>
+              {col.map((_item, rowIndex) => (
+                <div
+                  key={rowIndex}
+                  className={
+                    styles.col +
+                    ' ' +
+                    colorClassForPosition(collIndex, rowIndex)
+                  }
+                  onMouseEnter={() => {
+                    dragEnter(collIndex, rowIndex);
+                  }}
+                  onMouseDown={(event) => {
+                    dragStart(collIndex, rowIndex);
+                    event.preventDefault();
+                  }}
+                  onTouchStart={() => {
+                    dragStart(collIndex, rowIndex);
+                  }}
+                  onMouseUp={() => {
+                    this.isDragging = false;
+                  }}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
 }
-
-//export GridDumb

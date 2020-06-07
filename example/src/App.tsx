@@ -15,18 +15,16 @@ const App = () => {
     );
   return (
     <div>
-      <div className='grid-container'>
-        <GridDumb
-          pixels={fullGrid}
-          editable={true}
-          dragStart={(col: number, row: number) => {
-            console.log(`Drag start row:${row} col:${col}`);
-          }}
-          onDrag={(col: number, row: number) => {
-            console.log(`Dragged on row:${row} col:${col}`);
-          }}
-        ></GridDumb>
-      </div>
+      <GridDumb
+        pixels={fullGrid}
+        editable={true}
+        dragStart={(col: number, row: number) => {
+          console.log(`Drag start row:${row} col:${col}`);
+        }}
+        onDrag={(col: number, row: number) => {
+          console.log(`Dragged on row:${row} col:${col}`);
+        }}
+      ></GridDumb>
     </div>
   );
 };

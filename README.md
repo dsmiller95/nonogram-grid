@@ -13,14 +13,19 @@ npm install --save nonogram-grid
 ## Usage
 
 ```tsx
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
-import MyComponent from 'nonogram-grid'
-import 'nonogram-grid/dist/index.css'
+import { PixelDisplay, GridDumb } from 'nonogram-grid';
+import 'nonogram-grid/dist/index.css';
 
 class Example extends Component {
   render() {
-    return <MyComponent />
+    const gridData = [
+      [PixelDisplay.White, PixelDisplay.Black, PixelDisplay.White],
+      [PixelDisplay.White, PixelDisplay.White, PixelDisplay.Black],
+      [PixelDisplay.Black, PixelDisplay.White, PixelDisplay.Black]
+    ];
+    return <GridDumb pixels={gridData} editable={false} />;
   }
 }
 ```
