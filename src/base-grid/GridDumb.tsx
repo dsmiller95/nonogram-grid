@@ -1,5 +1,5 @@
-import * as React from 'react'
-import styles from './GridDumb.module.css'
+import * as React from 'react';
+import styles from './GridDumb.module.css';
 
 export enum PixelDisplay {
   White = 0,
@@ -10,29 +10,29 @@ export enum PixelDisplay {
 }
 
 export interface IProps {
-  pixels: PixelDisplay[][]
-  editable: boolean
-  dragStart?: (row: number, col: number) => void
-  onDrag?: (row: number, col: number) => void
+  pixels: PixelDisplay[][];
+  editable: boolean;
+  dragStart?: (col: number, row: number) => void;
+  onDrag?: (col: number, row: number) => void;
 }
 
 interface IState {}
 
 export class GridDumb extends React.Component<IProps, IState> {
   constructor(props: IProps) {
-    super(props)
+    super(props);
   }
 
-  private isDragging = false
+  private isDragging = false;
 
-  private gridRef: HTMLDivElement
+  private gridRef: HTMLDivElement;
 
   componentDidMount() {
     this.gridRef.addEventListener(
       'touchmove',
       (event) => {
         if (event.touches.length > 1) {
-          return
+          return;
         }
         // bad hack, pls change
         //  I'm warming up to the hack though...
@@ -40,89 +40,91 @@ export class GridDumb extends React.Component<IProps, IState> {
           view: window,
           bubbles: true,
           cancelable: true
-        })
+        });
         const element = document.elementFromPoint(
           event.touches[0].pageX,
           event.touches[0].pageY
-        )
-        element?.dispatchEvent(newEvent)
-        event.stopPropagation()
-        event.preventDefault()
+        );
+        element?.dispatchEvent(newEvent);
+        event.stopPropagation();
+        event.preventDefault();
       },
       {
         passive: false,
         capture: true
       }
-    )
+    );
     this.gridRef.addEventListener('touchend', () => {
-      this.isDragging = false
-    })
+      this.isDragging = false;
+    });
     this.gridRef.addEventListener('touchcancel', () => {
-      this.isDragging = false
-    })
+      this.isDragging = false;
+    });
   }
 
   private pixelToColorClass(pix: PixelDisplay): string {
     switch (pix) {
       case PixelDisplay.Black:
-        return 'black'
+        return styles.black;
       case PixelDisplay.White:
-        return 'white'
+        return styles.white;
       case PixelDisplay.Unknown:
-        return 'unknown'
+        return styles.unknown;
       case PixelDisplay.UnknownBlack:
-        return 'black uncertain'
+        return styles.black + ' ' + styles.uncertain;
       case PixelDisplay.UnknownWhite:
-        return 'white uncertain'
+        return styles.white + ' ' + styles.uncertain;
     }
   }
 
   public render() {
-    const isEditable = this.props.editable
-    const grid = this.props.pixels
+    const isEditable = this.props.editable;
+    const grid = this.props.pixels;
 
-    const colorClassForPosition = (row: number, col: number): string => {
-      const pixelValue = grid[row][col]
-      return this.pixelToColorClass(pixelValue)
-    }
+    const colorClassForPosition = (col: number, row: number): string => {
+      const pixelValue = grid[col][row];
+      return this.pixelToColorClass(pixelValue);
+    };
 
-    const dragEnter = (row: number, col: number) => {
+    const dragEnter = (col: number, row: number) => {
       if (this.isDragging) {
-        this.props.onDrag?.(row, col)
+        this.props.onDrag?.(col, row);
       }
-    }
-    const dragStart = (row: number, col: number) => {
-      if (!isEditable || this.isDragging) return
-      this.isDragging = true
-      this.props.dragStart?.(row, col)
-    }
+    };
+    const dragStart = (col: number, row: number) => {
+      if (!isEditable || this.isDragging) return;
+      this.isDragging = true;
+      this.props.dragStart?.(col, row);
+    };
     return (
-      <div className='Grid' ref={(ref) => ref && (this.gridRef = ref)}>
-        {grid.map((row, rowIndex) => (
-          <div key={rowIndex} className='row'>
-            {row.map((_item, colIndex) => (
+      <div className={styles.Grid} ref={(ref) => ref && (this.gridRef = ref)}>
+        {grid.map((col, collIndex) => (
+          <div key={collIndex} className={styles.row}>
+            {col.map((_item, rowIndex) => (
               <div
-                key={colIndex}
-                className={'col ' + colorClassForPosition(rowIndex, colIndex)}
+                key={rowIndex}
+                className={
+                  styles.col + ' ' + colorClassForPosition(collIndex, rowIndex)
+                }
                 onMouseEnter={() => {
-                  dragEnter(rowIndex, colIndex)
+                  dragEnter(collIndex, rowIndex);
                 }}
                 onMouseDown={(event) => {
-                  dragStart(rowIndex, colIndex)
-                  event.preventDefault()
+                  dragStart(collIndex, rowIndex);
+                  event.preventDefault();
                 }}
                 onTouchStart={() => {
-                  dragStart(rowIndex, colIndex)
+                  dragStart(collIndex, rowIndex);
                 }}
                 onMouseUp={() => {
-                  this.isDragging = false
+                  this.isDragging = false;
                 }}
               />
             ))}
           </div>
         ))}
       </div>
-    )
+    );
   }
 }
 

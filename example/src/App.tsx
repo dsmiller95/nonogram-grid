@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 
-import { ExampleComponent, PixelDisplay, GridDumb } from 'nonogram-grid'
-import 'nonogram-grid/dist/index.css'
+import { PixelDisplay, GridDumb } from 'nonogram-grid';
+import 'nonogram-grid/dist/index.css';
 
 const App = () => {
   const fullGrid = new Array(10)
@@ -12,15 +12,23 @@ const App = () => {
         .map(() =>
           Math.random() > 0.5 ? PixelDisplay.Black : PixelDisplay.White
         )
-    )
+    );
   return (
     <div>
-      <ExampleComponent text='Create React Library Example 😄' />
       <div className='grid-container'>
-        <GridDumb pixels={fullGrid} editable={false}></GridDumb>
+        <GridDumb
+          pixels={fullGrid}
+          editable={true}
+          dragStart={(col: number, row: number) => {
+            console.log(`Drag start row:${row} col:${col}`);
+          }}
+          onDrag={(col: number, row: number) => {
+            console.log(`Drag start row:${row} col:${col}`);
+          }}
+        ></GridDumb>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
