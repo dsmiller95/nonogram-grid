@@ -23,7 +23,7 @@ const App = () => {
             console.log(`Drag start row:${row} col:${col}`);
           }}
           onDrag={(col: number, row: number) => {
-            console.log(`Drag start row:${row} col:${col}`);
+            console.log(`Dragged on row:${row} col:${col}`);
           }}
         ></GridDumb>
       </div>
