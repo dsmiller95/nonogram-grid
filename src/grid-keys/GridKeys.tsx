@@ -52,20 +52,6 @@ export class GridKeys extends React.Component<IProps, IState> {
       };
     }
   }
-
-  private standardizeJaggedArray<T, J>(
-    array: T[][],
-    emptyValue: J
-  ): (T | J)[][] {
-    const columnsMaxSize = this.getMaxInnerLength(array);
-    return array.map((column: (T | J)[]) => {
-      var newColumn = column.map((x) => x);
-      while (newColumn.length < columnsMaxSize) {
-        newColumn.unshift(emptyValue);
-      }
-      return newColumn;
-    });
-  }
   private getMaxInnerLength<T>(array: T[][]): number {
     return array.reduce((agg, current) => Math.max(agg, current.length), 0);
   }
@@ -73,23 +59,24 @@ export class GridKeys extends React.Component<IProps, IState> {
   public render() {
     const keys = this.getKeys();
 
-    const columnsStandardized = this.standardizeJaggedArray(keys.columns, null);
-    const rowsStandardized = this.standardizeJaggedArray(keys.rows, null);
+    const columnsReversed = keys.columns.map((x) => x.reverse());
+    const rowsReversed = keys.rows.map((x) => x.reverse());
 
     const columnsMaxSize = this.getMaxInnerLength(keys.columns);
     const rowsMaxSize = this.getMaxInnerLength(keys.rows);
+    const maxGuideSize = Math.max(columnsMaxSize, rowsMaxSize);
 
-    const columnsWithIndexes = columnsStandardized.flatMap((x, colIndex) =>
+    const columnsWithIndexes = columnsReversed.flatMap((x, colIndex) =>
       x.map((y, rowIndex) => ({
-        rowIndex: rowIndex + 1,
-        colIndex: colIndex + rowsMaxSize + 1,
+        rowIndex: maxGuideSize - rowIndex,
+        colIndex: colIndex + maxGuideSize + 1,
         value: y
       }))
     );
-    const rowsWithIndexes = rowsStandardized.flatMap((x, rowIndex) =>
+    const rowsWithIndexes = rowsReversed.flatMap((x, rowIndex) =>
       x.map((y, colIndex) => ({
-        rowIndex: rowIndex + 1 + columnsMaxSize,
-        colIndex: colIndex + 1,
+        rowIndex: rowIndex + 1 + maxGuideSize,
+        colIndex: maxGuideSize - colIndex,
         value: y
       }))
     );
@@ -99,10 +86,10 @@ export class GridKeys extends React.Component<IProps, IState> {
         className={styles.keysContainer}
         style={{
           gridTemplateColumns: `repeat(${
-            rowsStandardized.length + rowsMaxSize
+            rowsReversed.length + maxGuideSize
           }, 1fr)`,
           gridTemplateRows: `repeat(${
-            columnsStandardized.length + columnsMaxSize
+            columnsReversed.length + maxGuideSize
           }, 1fr)`
         }}
       >
@@ -113,13 +100,9 @@ export class GridKeys extends React.Component<IProps, IState> {
               gridArea: cell.rowIndex + ' / ' + cell.colIndex
             }}
           >
-            {cell.value !== null ? (
-              <div className={styles.colNumber}>
-                <div className={styles.number}>{cell.value}</div>
-              </div>
-            ) : (
-              ''
-            )}
+            <div className={styles.colNumber}>
+              <div className={styles.number}>{cell.value}</div>
+            </div>
           </div>
         ))}
         {rowsWithIndexes.map((cell) => (
@@ -129,27 +112,23 @@ export class GridKeys extends React.Component<IProps, IState> {
               gridArea: cell.rowIndex + ' / ' + cell.colIndex
             }}
           >
-            {cell.value !== null ? (
-              <div className={styles.rowNumber}>
-                <div className={styles.number}>{cell.value}</div>
-              </div>
-            ) : (
-              ''
-            )}
+            <div className={styles.rowNumber}>
+              <div className={styles.number}>{cell.value}</div>
+            </div>
           </div>
         ))}
         <div
           className={styles.content}
           style={{
             gridArea:
-              columnsMaxSize +
+              maxGuideSize +
               1 +
               ' / ' +
-              (rowsMaxSize + 1) +
+              (maxGuideSize + 1) +
               ' / ' +
-              (columnsMaxSize + 1 + rowsStandardized.length) +
+              (maxGuideSize + 1 + rowsReversed.length) +
               ' / ' +
-              (rowsMaxSize + 1 + columnsStandardized.length)
+              (maxGuideSize + 1 + columnsReversed.length)
           }}
         >
           {this.props.children}
