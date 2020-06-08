@@ -5,7 +5,7 @@ import { PixelDisplay, GridDumb, GridKeys } from 'nonogram-grid';
 import 'nonogram-grid/dist/index.css';
 
 const App = () => {
-  const fullGrid = [
+  const mainGrid = [
     [
       PixelDisplay.Black,
       PixelDisplay.White,
@@ -49,20 +49,61 @@ const App = () => {
       PixelDisplay.White
     ]
   ];
+
+  const thinGrid = [
+    [PixelDisplay.Black],
+    [PixelDisplay.White],
+    [PixelDisplay.White],
+    [PixelDisplay.Black],
+    [PixelDisplay.Black]
+  ];
+  const tallGrid = [
+    [
+      PixelDisplay.White,
+      PixelDisplay.Black,
+      PixelDisplay.White,
+      PixelDisplay.Black,
+      PixelDisplay.Black
+    ]
+  ];
+  const onDragStart = (col: number, row: number) => {
+    console.log(`Drag start row:${row} col:${col}`);
+  };
+  const onDragged = (col: number, row: number) => {
+    console.log(`Dragged on row:${row} col:${col}`);
+  };
   return (
-    <div style={{ width: 300, height: 300 }}>
-      <GridKeys pixels={fullGrid}>
-        <GridDumb
-          pixels={fullGrid}
-          editable={true}
-          dragStart={(col: number, row: number) => {
-            console.log(`Drag start row:${row} col:${col}`);
-          }}
-          onDrag={(col: number, row: number) => {
-            console.log(`Dragged on row:${row} col:${col}`);
-          }}
-        ></GridDumb>
-      </GridKeys>
+    <div>
+      <div className={'exampleSection'}>
+        <GridKeys pixels={mainGrid}>
+          <GridDumb
+            pixels={mainGrid}
+            editable={true}
+            dragStart={onDragStart}
+            onDrag={onDragged}
+          ></GridDumb>
+        </GridKeys>
+      </div>
+      <div className={'exampleSection'}>
+        <GridKeys pixels={thinGrid}>
+          <GridDumb
+            pixels={thinGrid}
+            editable={true}
+            dragStart={onDragStart}
+            onDrag={onDragged}
+          ></GridDumb>
+        </GridKeys>
+      </div>
+      <div className={'exampleSection'}>
+        <GridKeys pixels={tallGrid}>
+          <GridDumb
+            pixels={tallGrid}
+            editable={true}
+            dragStart={onDragStart}
+            onDrag={onDragged}
+          ></GridDumb>
+        </GridKeys>
+      </div>
     </div>
   );
 };
