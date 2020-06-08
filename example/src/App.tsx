@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { PixelDisplay, GridDumb, GridKeys } from 'nonogram-grid';
+
 import 'nonogram-grid/dist/index.css';
-//import { IKeys } from '../../dist/grid-keys/GridKeys';
 
 const App = () => {
   const fullGrid = [
@@ -49,10 +49,6 @@ const App = () => {
       PixelDisplay.White
     ]
   ];
-  // const keys: IKeys = {
-  //   columns: [[1, 1], [], [2]],
-  //   rows: [[1, 1], [1], []]
-  // };
   return (
     <div style={{ width: 300, height: 300 }}>
       <GridKeys pixels={fullGrid}>
