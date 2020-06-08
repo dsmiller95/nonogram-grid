@@ -13,6 +13,7 @@
   },
   "scripts": {
     "build:css": "node-sass src/ -o src/ ",
+    "watch:css": "node-sass src/ -o src/ -w src/ -r ",
     "build": "npm run build:css && microbundle-crl --no-compress --format modern,cjs",
     "start": "npm run build:css && microbundle-crl watch --no-compress --format modern,cjs",
     "prepare": "run-s build",

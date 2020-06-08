@@ -1,30 +1,33 @@
 import React from 'react';
 
-import { PixelDisplay, GridDumb } from 'nonogram-grid';
+import { PixelDisplay, GridDumb, GridKeys } from 'nonogram-grid';
 import 'nonogram-grid/dist/index.css';
+import { IKeys } from '../../dist/grid-keys/GridKeys';
 
 const App = () => {
-  const fullGrid = new Array(10)
-    .fill(undefined)
-    .map(() =>
-      new Array(10)
-        .fill(undefined)
-        .map(() =>
-          Math.random() > 0.5 ? PixelDisplay.Black : PixelDisplay.White
-        )
-    );
+  const fullGrid = [
+    [PixelDisplay.Black, PixelDisplay.White, PixelDisplay.Black],
+    [PixelDisplay.White, PixelDisplay.White, PixelDisplay.White],
+    [PixelDisplay.Black, PixelDisplay.Black, PixelDisplay.White]
+  ];
+  const keys: IKeys = {
+    columns: [[1, 1], [], [2]],
+    rows: [[1, 1], [1], []]
+  };
   return (
-    <div>
-      <GridDumb
-        pixels={fullGrid}
-        editable={true}
-        dragStart={(col: number, row: number) => {
-          console.log(`Drag start row:${row} col:${col}`);
-        }}
-        onDrag={(col: number, row: number) => {
-          console.log(`Dragged on row:${row} col:${col}`);
-        }}
-      ></GridDumb>
+    <div style={{ width: 300, height: 300 }}>
+      <GridKeys keys={keys}>
+        <GridDumb
+          pixels={fullGrid}
+          editable={true}
+          dragStart={(col: number, row: number) => {
+            console.log(`Drag start row:${row} col:${col}`);
+          }}
+          onDrag={(col: number, row: number) => {
+            console.log(`Dragged on row:${row} col:${col}`);
+          }}
+        ></GridDumb>
+      </GridKeys>
     </div>
   );
 };

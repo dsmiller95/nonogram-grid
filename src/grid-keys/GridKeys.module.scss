@@ -1,0 +1,36 @@
+.keysContainer {
+  display: grid;
+  width: 100%;
+  height: 100%;
+}
+
+.colNumberContainer {
+  .colNumber {
+    width: 50%;
+    height: 100%;
+    margin: 0px auto;
+    text-align: center;
+    border: 1px solid black;
+    border-radius: 5px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: lightgray;
+  }
+}
+
+.rowNumberContainer {
+  display: flex;
+  align-items: center;
+  .rowNumber {
+    width: 100%;
+    height: 50%;
+    margin: 0px auto;
+    text-align: center;
+    border: 1px solid black;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background: lightgray;
+  }
+}
