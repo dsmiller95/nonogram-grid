@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styles from './GridKeys.module.css';
 import { PixelDisplay } from '../base-grid/GridDumb';
+import { generateKey } from './grid-to-key';
 
 export type IProps =
   | {
@@ -11,7 +12,6 @@ export type IProps =
 interface IKeysProps {
   keys: IKeys;
 }
-
 export interface IKeys {
   rows: number[][];
   columns: number[][];
@@ -37,7 +37,19 @@ export class GridKeys extends React.Component<IProps, IState> {
     if (this.isKeysProps(this.props)) {
       return this.props.keys;
     } else {
-      throw 'converter not implemented';
+      const keys = generateKey(
+        this.props.pixels.map((col) =>
+          col.map((item) =>
+            item === PixelDisplay.Black || item === PixelDisplay.UnknownBlack
+              ? true
+              : false
+          )
+        )
+      );
+      return {
+        columns: keys.firstDimension,
+        rows: keys.secondDimension
+      };
     }
   }
 
@@ -45,16 +57,17 @@ export class GridKeys extends React.Component<IProps, IState> {
     array: T[][],
     emptyValue: J
   ): (T | J)[][] {
-    const columnsMaxSize = array.reduce(
-      (agg, current) => Math.max(agg, current.length),
-      0
-    );
+    const columnsMaxSize = this.getMaxInnerLength(array);
     return array.map((column: (T | J)[]) => {
-      const oldColumnLength = column.length;
-      column.length = columnsMaxSize;
-      // TODO: fill from other side
-      return column.fill(emptyValue, oldColumnLength, column.length);
+      var newColumn = column.map((x) => x);
+      while (newColumn.length < columnsMaxSize) {
+        newColumn.unshift(emptyValue);
+      }
+      return newColumn;
     });
+  }
+  private getMaxInnerLength<T>(array: T[][]): number {
+    return array.reduce((agg, current) => Math.max(agg, current.length), 0);
   }
 
   public render() {
@@ -63,18 +76,16 @@ export class GridKeys extends React.Component<IProps, IState> {
     const columnsStandardized = this.standardizeJaggedArray(keys.columns, null);
     const rowsStandardized = this.standardizeJaggedArray(keys.rows, null);
 
-    const columnsMaxSize = columnsStandardized[0].length;
-    const rowsMaxSize = rowsStandardized[0].length;
+    const columnsMaxSize = this.getMaxInnerLength(keys.columns);
+    const rowsMaxSize = this.getMaxInnerLength(keys.rows);
 
-    const columnsWithIndexes = columnsStandardized
-      .flatMap((x, colIndex) =>
-        x.map((y, rowIndex) => ({ rowIndex, colIndex, value: y }))
-      )
-      .map((x) => ({
-        ...x,
-        colIndex: x.colIndex + rowsMaxSize + 1,
-        rowIndex: x.rowIndex + 1
-      }));
+    const columnsWithIndexes = columnsStandardized.flatMap((x, colIndex) =>
+      x.map((y, rowIndex) => ({
+        rowIndex: rowIndex + 1,
+        colIndex: colIndex + rowsMaxSize + 1,
+        value: y
+      }))
+    );
     const rowsWithIndexes = rowsStandardized.flatMap((x, rowIndex) =>
       x.map((y, colIndex) => ({
         rowIndex: rowIndex + 1 + columnsMaxSize,
@@ -82,7 +93,6 @@ export class GridKeys extends React.Component<IProps, IState> {
         value: y
       }))
     );
-    console.log(rowsWithIndexes);
 
     return (
       <div
@@ -103,11 +113,13 @@ export class GridKeys extends React.Component<IProps, IState> {
               gridArea: cell.rowIndex + ' / ' + cell.colIndex
             }}
           >
-            <div className={styles.colNumber}>
-              <div className={styles.number}>
-                {cell.value === null ? '' : cell.value}
+            {cell.value !== null ? (
+              <div className={styles.colNumber}>
+                <div className={styles.number}>{cell.value}</div>
               </div>
-            </div>
+            ) : (
+              ''
+            )}
           </div>
         ))}
         {rowsWithIndexes.map((cell) => (
@@ -117,25 +129,27 @@ export class GridKeys extends React.Component<IProps, IState> {
               gridArea: cell.rowIndex + ' / ' + cell.colIndex
             }}
           >
-            <div className={styles.rowNumber}>
-              <div className={styles.number}>
-                {cell.value === null ? '' : cell.value}
+            {cell.value !== null ? (
+              <div className={styles.rowNumber}>
+                <div className={styles.number}>{cell.value}</div>
               </div>
-            </div>
+            ) : (
+              ''
+            )}
           </div>
         ))}
         <div
           className={styles.content}
           style={{
             gridArea:
-              rowsMaxSize +
+              columnsMaxSize +
               1 +
               ' / ' +
-              (columnsMaxSize + 1) +
+              (rowsMaxSize + 1) +
               ' / ' +
-              (rowsMaxSize + 1 + columnsStandardized.length) +
+              (columnsMaxSize + 1 + rowsStandardized.length) +
               ' / ' +
-              (columnsMaxSize + 1 + rowsStandardized.length)
+              (rowsMaxSize + 1 + columnsStandardized.length)
           }}
         >
           {this.props.children}
