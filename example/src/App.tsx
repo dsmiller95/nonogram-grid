@@ -40,6 +40,13 @@ const App = () => {
       PixelDisplay.White,
       PixelDisplay.White,
       PixelDisplay.White
+    ],
+    [
+      PixelDisplay.White,
+      PixelDisplay.Black,
+      PixelDisplay.White,
+      PixelDisplay.Black,
+      PixelDisplay.White
     ]
   ];
   // const keys: IKeys = {

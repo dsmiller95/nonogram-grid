@@ -86,11 +86,9 @@ export class GridKeys extends React.Component<IProps, IState> {
         className={styles.keysContainer}
         style={{
           gridTemplateColumns: `repeat(${
-            rowsReversed.length + maxGuideSize
-          }, 1fr)`,
-          gridTemplateRows: `repeat(${
             columnsReversed.length + maxGuideSize
-          }, 1fr)`
+          }, 1fr)`,
+          gridTemplateRows: `repeat(${rowsReversed.length + maxGuideSize}, 1fr)`
         }}
       >
         {columnsWithIndexes.map((cell) => (
