@@ -15,32 +15,41 @@ interface IState {}
  *
  * @see https://stackoverflow.com/questions/118241/calculate-text-width-with-javascript/21015393#21015393
  */
-// TODO
-// function getTextWidth(text: string, font: string) {
-//   // re-use canvas object for better performance
-//   var canvas =
-//     getTextWidth.canvas ||
-//     (getTextWidth.canvas = document.createElement('canvas'));
-//   var context = canvas.getContext('2d');
-//   context.font = font;
-//   var metrics = context.measureText(text);
-//   return metrics.width;
-// }
+function getTextWidth(text: string, font: string) {
+  var canvas = document.createElement('canvas');
+  var context = canvas.getContext('2d');
+  if (!context) {
+    throw new Error('cannot get context of canvas');
+  }
+  context.font = font;
+  var metrics = context.measureText(text);
+  return metrics.width;
+}
 
 export class KeyNumber extends React.Component<IProps, IState> {
   public render() {
+    const numberText = this.props.display.toString(10);
+    const font = 'bold 10px cursive';
+    const textSize = getTextWidth(numberText, font);
+    const textOffsetFromCenter = textSize / 2;
+    const boxWidth = 15;
     return (
       <svg viewBox='0 0 15 15' className={styles.svgBox}>
-        <text y='12' x='3.5' fill='black' className={styles.textContainer}>
+        <text
+          y='11.5'
+          x={boxWidth / 2 - textOffsetFromCenter}
+          fill='black'
+          className={styles.textContainer}
+        >
           {this.props.display}
         </text>
         <rect
-          x='3'
-          y='1'
-          rx='1'
-          ry='1'
-          width='9'
-          height='13'
+          x='.5'
+          y='.5'
+          rx='2'
+          ry='2'
+          width='14'
+          height='14'
           fillOpacity='0.5'
           style={{ stroke: 'black', strokeWidth: 1, opacity: 0.5 }}
         />
