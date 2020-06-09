@@ -17,3 +17,13 @@ body {
   margin: 20px;
   display: inline-block;
 }
+
+.doubleWideExample {
+  border: 2px solid black;
+  border-radius: 5px;
+  width: 600px;
+  height: 300px;
+  padding: 10px;
+  margin: 20px;
+  display: inline-block;
+}

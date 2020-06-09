@@ -68,15 +68,27 @@ const App = () => {
   ];
   const absurdlyThinGrid = [
     [PixelDisplay.Black, PixelDisplay.Black],
-    [PixelDisplay.White, PixelDisplay.White],
-    [PixelDisplay.White, PixelDisplay.White],
-    [PixelDisplay.Black, PixelDisplay.Black],
-    [PixelDisplay.Black, PixelDisplay.Black],
-    [PixelDisplay.Black, PixelDisplay.White],
-    [PixelDisplay.Black, PixelDisplay.White],
-    [PixelDisplay.Black, PixelDisplay.Black],
     [PixelDisplay.White, PixelDisplay.Black],
     [PixelDisplay.White, PixelDisplay.Black],
+    [PixelDisplay.Black, PixelDisplay.Black],
+    [PixelDisplay.Black, PixelDisplay.Black],
+    [PixelDisplay.Black, PixelDisplay.Black],
+    [PixelDisplay.White, PixelDisplay.Black],
+    [PixelDisplay.Black, PixelDisplay.Black],
+    [PixelDisplay.Black, PixelDisplay.Black],
+    [PixelDisplay.Black, PixelDisplay.Black],
+    [PixelDisplay.White, PixelDisplay.Black],
+    [PixelDisplay.Black, PixelDisplay.Black],
+    [PixelDisplay.Black, PixelDisplay.Black],
+    [PixelDisplay.Black, PixelDisplay.Black],
+    [PixelDisplay.White, PixelDisplay.Black],
+    [PixelDisplay.White, PixelDisplay.White],
+    [PixelDisplay.Black, PixelDisplay.Black],
+    [PixelDisplay.Black, PixelDisplay.Black],
+    [PixelDisplay.Black, PixelDisplay.Black],
+    [PixelDisplay.Black, PixelDisplay.Black],
+    [PixelDisplay.White, PixelDisplay.Black],
+    [PixelDisplay.White, PixelDisplay.White],
     [PixelDisplay.Black, PixelDisplay.Black],
     [PixelDisplay.Black, PixelDisplay.Black]
   ];
@@ -118,7 +130,7 @@ const App = () => {
           ></GridDumb>
         </GridKeys>
       </div>
-      <div className={'exampleSection'}>
+      <div className={'doubleWideExample'}>
         <GridKeys pixels={absurdlyThinGrid}>
           <GridDumb
             pixels={absurdlyThinGrid}

@@ -2,6 +2,7 @@ import * as React from 'react';
 import styles from './GridKeys.module.css';
 import { PixelDisplay } from '../base-grid/GridDumb';
 import { generateKey } from './grid-to-key';
+import { KeyNumber } from './key-number/KeyNumber';
 
 export type IProps =
   | {
@@ -26,9 +27,6 @@ interface IState {
 
 export class GridKeys extends React.Component<IProps, IState> {
   container: HTMLDivElement | null;
-  constructor(props: IProps) {
-    super(props);
-  }
 
   componentDidMount() {
     this.setState({
@@ -52,19 +50,19 @@ export class GridKeys extends React.Component<IProps, IState> {
     } else {
       const keys = generateKey(
         this.props.pixels.map((col) =>
-          col.map((item) =>
-            item === PixelDisplay.Black || item === PixelDisplay.UnknownBlack
-              ? true
-              : false
+          col.map(
+            (item) =>
+              !!(
+                item === PixelDisplay.Black ||
+                item === PixelDisplay.UnknownBlack
+              )
           )
         )
       );
-      return {
-        columns: keys.firstDimension,
-        rows: keys.secondDimension
-      };
+      return { columns: keys.firstDimension, rows: keys.secondDimension };
     }
   }
+
   private getMaxInnerLength<T>(array: T[][]): number {
     return array.reduce((agg, current) => Math.max(agg, current.length), 0);
   }
@@ -118,9 +116,10 @@ export class GridKeys extends React.Component<IProps, IState> {
             }}
             key={`col${cell.colIndex}/${cell.rowIndex}`}
           >
-            <div className={styles.colNumber}>
+            <KeyNumber display={cell.value} />
+            {/* <div className={styles.colNumber}>
               <div className={styles.number}>{cell.value}</div>
-            </div>
+            </div> */}
           </div>
         ))}
         {rowsWithIndexes.map((cell) => (
@@ -131,9 +130,7 @@ export class GridKeys extends React.Component<IProps, IState> {
             }}
             key={`row${cell.colIndex}/${cell.rowIndex}`}
           >
-            <div className={styles.rowNumber}>
-              <div className={styles.number}>{cell.value}</div>
-            </div>
+            <KeyNumber display={cell.value} />
           </div>
         ))}
         <div
@@ -149,7 +146,7 @@ export class GridKeys extends React.Component<IProps, IState> {
               ' / ' +
               (rowSize + 1 + columnsReversed.length)
           }}
-          key={'mainGrid'}
+          key='mainGrid'
         >
           {this.props.children}
         </div>
