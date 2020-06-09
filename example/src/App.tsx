@@ -66,6 +66,20 @@ const App = () => {
       PixelDisplay.Black
     ]
   ];
+  const absurdlyThinGrid = [
+    [PixelDisplay.Black, PixelDisplay.Black],
+    [PixelDisplay.White, PixelDisplay.White],
+    [PixelDisplay.White, PixelDisplay.White],
+    [PixelDisplay.Black, PixelDisplay.Black],
+    [PixelDisplay.Black, PixelDisplay.Black],
+    [PixelDisplay.Black, PixelDisplay.White],
+    [PixelDisplay.Black, PixelDisplay.White],
+    [PixelDisplay.Black, PixelDisplay.Black],
+    [PixelDisplay.White, PixelDisplay.Black],
+    [PixelDisplay.White, PixelDisplay.Black],
+    [PixelDisplay.Black, PixelDisplay.Black],
+    [PixelDisplay.Black, PixelDisplay.Black]
+  ];
   const onDragStart = (col: number, row: number) => {
     console.log(`Drag start row:${row} col:${col}`);
   };
@@ -98,6 +112,16 @@ const App = () => {
         <GridKeys pixels={tallGrid}>
           <GridDumb
             pixels={tallGrid}
+            editable={true}
+            dragStart={onDragStart}
+            onDrag={onDragged}
+          ></GridDumb>
+        </GridKeys>
+      </div>
+      <div className={'exampleSection'}>
+        <GridKeys pixels={absurdlyThinGrid}>
+          <GridDumb
+            pixels={absurdlyThinGrid}
             editable={true}
             dragStart={onDragStart}
             onDrag={onDragged}

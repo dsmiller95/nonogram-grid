@@ -17,14 +17,27 @@ export interface IKeys {
   columns: number[][];
 }
 
-interface IState {}
+interface IState {
+  dimensions: {
+    width: number;
+    height: number;
+  };
+}
 
 export class GridKeys extends React.Component<IProps, IState> {
+  container: HTMLDivElement | null;
   constructor(props: IProps) {
     super(props);
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.setState({
+      dimensions: {
+        width: this.container?.offsetWidth || 0,
+        height: this.container?.offsetHeight || 0
+      }
+    });
+  }
 
   private isKeysProps(props: any): props is Readonly<IKeysProps> {
     if (props.keys) {
@@ -56,39 +69,45 @@ export class GridKeys extends React.Component<IProps, IState> {
     return array.reduce((agg, current) => Math.max(agg, current.length), 0);
   }
 
-  public render() {
+  private renderContent() {
     const keys = this.getKeys();
 
     const columnsReversed = keys.columns.map((x) => x.reverse());
     const rowsReversed = keys.rows.map((x) => x.reverse());
 
-    const columnsMaxSize = this.getMaxInnerLength(keys.columns);
-    const rowsMaxSize = this.getMaxInnerLength(keys.rows);
-    const maxGuideSize = Math.max(columnsMaxSize, rowsMaxSize);
-
+    const colSize = this.getMaxInnerLength(keys.columns);
+    const rowSize = this.getMaxInnerLength(keys.rows);
     const columnsWithIndexes = columnsReversed.flatMap((x, colIndex) =>
       x.map((y, rowIndex) => ({
-        rowIndex: maxGuideSize - rowIndex,
-        colIndex: colIndex + maxGuideSize + 1,
+        rowIndex: colSize - rowIndex,
+        colIndex: colIndex + rowSize + 1,
         value: y
       }))
     );
     const rowsWithIndexes = rowsReversed.flatMap((x, rowIndex) =>
       x.map((y, colIndex) => ({
-        rowIndex: rowIndex + 1 + maxGuideSize,
-        colIndex: maxGuideSize - colIndex,
+        rowIndex: rowIndex + 1 + colSize,
+        colIndex: rowSize - colIndex,
         value: y
       }))
     );
-
+    const totalCols = columnsReversed.length + rowSize;
+    const totalRows = rowsReversed.length + colSize;
+    const { dimensions } = this.state;
+    const minDimension = Math.min(
+      dimensions.width / totalCols,
+      dimensions.height / totalRows
+    );
     return (
       <div
-        className={styles.keysContainer}
+        className={styles.keysGrid}
         style={{
           gridTemplateColumns: `repeat(${
-            columnsReversed.length + maxGuideSize
-          }, 1fr)`,
-          gridTemplateRows: `repeat(${rowsReversed.length + maxGuideSize}, 1fr)`
+            columnsReversed.length + rowSize
+          }, ${minDimension}px)`,
+          gridTemplateRows: `repeat(${
+            rowsReversed.length + colSize
+          }, ${minDimension}px)`
         }}
       >
         {columnsWithIndexes.map((cell) => (
@@ -97,6 +116,7 @@ export class GridKeys extends React.Component<IProps, IState> {
             style={{
               gridArea: cell.rowIndex + ' / ' + cell.colIndex
             }}
+            key={`col${cell.colIndex}/${cell.rowIndex}`}
           >
             <div className={styles.colNumber}>
               <div className={styles.number}>{cell.value}</div>
@@ -109,6 +129,7 @@ export class GridKeys extends React.Component<IProps, IState> {
             style={{
               gridArea: cell.rowIndex + ' / ' + cell.colIndex
             }}
+            key={`row${cell.colIndex}/${cell.rowIndex}`}
           >
             <div className={styles.rowNumber}>
               <div className={styles.number}>{cell.value}</div>
@@ -119,18 +140,27 @@ export class GridKeys extends React.Component<IProps, IState> {
           className={styles.content}
           style={{
             gridArea:
-              maxGuideSize +
+              colSize +
               1 +
               ' / ' +
-              (maxGuideSize + 1) +
+              (rowSize + 1) +
               ' / ' +
-              (maxGuideSize + 1 + rowsReversed.length) +
+              (colSize + 1 + rowsReversed.length) +
               ' / ' +
-              (maxGuideSize + 1 + columnsReversed.length)
+              (rowSize + 1 + columnsReversed.length)
           }}
+          key={'mainGrid'}
         >
           {this.props.children}
         </div>
+      </div>
+    );
+  }
+
+  public render() {
+    return (
+      <div className={styles.keysContainer} ref={(el) => (this.container = el)}>
+        {this.state?.dimensions && this.renderContent()}
       </div>
     );
   }
