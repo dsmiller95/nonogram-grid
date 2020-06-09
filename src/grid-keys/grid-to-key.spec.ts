@@ -1,5 +1,5 @@
-import { PixelDisplay } from '../base-grid/GridDumb';
 import { generateKey } from './grid-to-key';
+import { PixelDisplay } from '../models/PixelDisplay';
 
 /**
  * X : set
@@ -10,7 +10,7 @@ import { generateKey } from './grid-to-key';
 const charMap: Record<string, PixelDisplay> = {
   X: PixelDisplay.Black,
   O: PixelDisplay.White,
-  '-': PixelDisplay.Unknown
+  '-': PixelDisplay.Unknown,
 };
 function rowFromString(rowString: string): PixelDisplay[] {
   return Array.from(rowString)
@@ -34,7 +34,7 @@ describe('when generating guides based off of a grid', () => {
             XXXXXXXX
             OOOOOOOO
         `).map((row) => row.map((cell) => cell === PixelDisplay.Black));
-    let guide = generateKey(grid);
+    const guide = generateKey(grid);
     expect(guide.secondDimension).toEqual([
       [3, 1],
       [1, 1],
@@ -43,7 +43,7 @@ describe('when generating guides based off of a grid', () => {
       [3, 1],
       [2],
       [1, 1],
-      [5]
+      [5],
     ]);
     expect(guide.firstDimension).toEqual([
       [1, 3, 2],
@@ -51,7 +51,7 @@ describe('when generating guides based off of a grid', () => {
       [5, 1],
       [1, 1, 1],
       [8],
-      []
+      [],
     ]);
   });
 });

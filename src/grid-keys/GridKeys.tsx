@@ -1,8 +1,8 @@
 import * as React from 'react';
 import styles from './GridKeys.module.css';
-import { PixelDisplay } from '../base-grid/GridDumb';
 import { generateKey } from './grid-to-key';
 import { KeyNumber } from './key-number/KeyNumber';
+import { PixelDisplay } from '../models/PixelDisplay';
 
 export type IProps =
   | {
@@ -32,8 +32,8 @@ export class GridKeys extends React.Component<IProps, IState> {
     this.setState({
       dimensions: {
         width: this.container?.offsetWidth || 0,
-        height: this.container?.offsetHeight || 0
-      }
+        height: this.container?.offsetHeight || 0,
+      },
     });
   }
 
@@ -79,14 +79,14 @@ export class GridKeys extends React.Component<IProps, IState> {
       x.map((y, rowIndex) => ({
         rowIndex: colSize - rowIndex,
         colIndex: colIndex + rowSize + 1,
-        value: y
+        value: y,
       }))
     );
     const rowsWithIndexes = rowsReversed.flatMap((x, rowIndex) =>
       x.map((y, colIndex) => ({
         rowIndex: rowIndex + 1 + colSize,
         colIndex: rowSize - colIndex,
-        value: y
+        value: y,
       }))
     );
     const totalCols = columnsReversed.length + rowSize;
@@ -105,28 +105,25 @@ export class GridKeys extends React.Component<IProps, IState> {
           }, ${minDimension}px)`,
           gridTemplateRows: `repeat(${
             rowsReversed.length + colSize
-          }, ${minDimension}px)`
+          }, ${minDimension}px)`,
         }}
       >
         {columnsWithIndexes.map((cell) => (
           <div
             className={styles.colNumberContainer}
             style={{
-              gridArea: cell.rowIndex + ' / ' + cell.colIndex
+              gridArea: cell.rowIndex + ' / ' + cell.colIndex,
             }}
             key={`col${cell.colIndex}/${cell.rowIndex}`}
           >
             <KeyNumber display={cell.value} />
-            {/* <div className={styles.colNumber}>
-              <div className={styles.number}>{cell.value}</div>
-            </div> */}
           </div>
         ))}
         {rowsWithIndexes.map((cell) => (
           <div
             className={styles.rowNumberContainer}
             style={{
-              gridArea: cell.rowIndex + ' / ' + cell.colIndex
+              gridArea: cell.rowIndex + ' / ' + cell.colIndex,
             }}
             key={`row${cell.colIndex}/${cell.rowIndex}`}
           >
@@ -144,7 +141,7 @@ export class GridKeys extends React.Component<IProps, IState> {
               ' / ' +
               (colSize + 1 + rowsReversed.length) +
               ' / ' +
-              (rowSize + 1 + columnsReversed.length)
+              (rowSize + 1 + columnsReversed.length),
           }}
           key='mainGrid'
         >

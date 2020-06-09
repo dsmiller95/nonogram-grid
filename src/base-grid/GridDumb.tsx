@@ -1,13 +1,6 @@
 import * as React from 'react';
 import styles from './GridDumb.module.css';
-
-export enum PixelDisplay {
-  White = 0,
-  Unknown = 1,
-  Black = 2,
-  UnknownBlack = 3,
-  UnknownWhite = 4
-}
+import { PixelDisplay } from '../models/PixelDisplay';
 
 export interface IProps {
   pixels: PixelDisplay[][];
@@ -19,10 +12,6 @@ export interface IProps {
 interface IState {}
 
 export class GridDumb extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props);
-  }
-
   private isDragging = false;
 
   private gridRef: HTMLDivElement;
@@ -39,7 +28,7 @@ export class GridDumb extends React.Component<IProps, IState> {
         const newEvent = new MouseEvent('mouseover', {
           view: window,
           bubbles: true,
-          cancelable: true
+          cancelable: true,
         });
         const element = document.elementFromPoint(
           event.touches[0].pageX,
@@ -51,7 +40,7 @@ export class GridDumb extends React.Component<IProps, IState> {
       },
       {
         passive: false,
-        capture: true
+        capture: true,
       }
     );
     this.gridRef.addEventListener('touchend', () => {

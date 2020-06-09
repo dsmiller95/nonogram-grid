@@ -21,7 +21,7 @@ export function generateKey(grid: boolean[][]) {
 
   return {
     firstDimension,
-    secondDimension
+    secondDimension,
   };
 }
 
@@ -29,7 +29,7 @@ function generateKeyForSlice(slice: boolean[]): number[] {
   const key: number[] = [];
   let runLength = 0;
   for (let i = 0; i < slice.length; i++) {
-    let pixel = slice[i];
+    const pixel = slice[i];
     if (pixel) {
       runLength++;
     }
