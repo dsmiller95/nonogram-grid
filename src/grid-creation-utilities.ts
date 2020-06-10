@@ -19,6 +19,7 @@ function rowFromString(rowString: string): PixelDisplay[] {
 /**
  * Use this function to create a grid from a large string: every line is a new row
  * and each character is a cell. `X` for Black, `O` for White, and `-` for Unknown
+ *  Whitespace other than a newline is ignored
  * @param gridString A template string to create the grid from
  */
 export function gridFromString(gridString: string): PixelDisplay[][] {
