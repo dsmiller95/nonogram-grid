@@ -53,8 +53,8 @@ export class GridKeys extends React.Component<IProps, IState> {
       return this.props.keys;
     } else {
       const keys = generateKey(
-        this.props.pixels.map((col) =>
-          col.map(
+        this.props.pixels.map((row) =>
+          row.map(
             (item) =>
               !!(
                 item === PixelDisplay.Black ||
@@ -64,10 +64,10 @@ export class GridKeys extends React.Component<IProps, IState> {
         )
       );
       return {
-        columns: this.props.hideColKeys
+        rows: this.props.hideRowKeys
           ? keys.firstDimension.map(() => [])
           : keys.firstDimension,
-        rows: this.props.hideRowKeys
+        columns: this.props.hideColKeys
           ? keys.secondDimension.map(() => [])
           : keys.secondDimension,
       };

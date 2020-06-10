@@ -50,14 +50,14 @@ const App = () => {
     ]
   ];
 
-  const thinGrid = [
+  const tallGrid = [
     [PixelDisplay.Black],
     [PixelDisplay.White],
     [PixelDisplay.White],
     [PixelDisplay.Black],
     [PixelDisplay.Black]
   ];
-  const tallGrid = [
+  const thinGrid = [
     [
       PixelDisplay.White,
       PixelDisplay.Black,
@@ -66,7 +66,7 @@ const App = () => {
       PixelDisplay.Black
     ]
   ];
-  const absurdlyThinGrid = [
+  const absurdlyTallGrid = [
     [PixelDisplay.Black, PixelDisplay.Black],
     [PixelDisplay.White, PixelDisplay.Black],
     [PixelDisplay.White, PixelDisplay.Black],
@@ -111,19 +111,7 @@ const App = () => {
         </GridKeys>
       </div>
       <div className={'exampleSection'}>
-        <GridKeys pixels={thinGrid}>
-          <GridDumb
-            pixels={thinGrid}
-            editable={true}
-            dragStart={onDragStart}
-            onDrag={onDragged}
-          ></GridDumb>
-        </GridKeys>
-      </div>
-      <div className={'exampleSection'}>
-        <GridKeys
-          pixels={tallGrid}
-          hideRowKeys={true}>
+        <GridKeys pixels={tallGrid}>
           <GridDumb
             pixels={tallGrid}
             editable={true}
@@ -132,9 +120,21 @@ const App = () => {
           ></GridDumb>
         </GridKeys>
       </div>
+      <div className={'exampleSection'}>
+        <GridKeys
+          pixels={thinGrid}
+          hideRowKeys={true}>
+          <GridDumb
+            pixels={thinGrid}
+            editable={true}
+            dragStart={onDragStart}
+            onDrag={onDragged}
+          ></GridDumb>
+        </GridKeys>
+      </div>
       <div className={'exampleManualSize'}>
         <ManualSolveGrid
-          goalPixels={tallGrid}
+          goalPixels={thinGrid}
           transitionModel={[
             PixelDisplay.Unknown,
             PixelDisplay.Black,
@@ -144,9 +144,9 @@ const App = () => {
         </ManualSolveGrid>
       </div>
       <div className={'exampleManualSize'}>
-        <GridKeys pixels={absurdlyThinGrid} cellSize={15}>
+        <GridKeys pixels={absurdlyTallGrid} cellSize={15}>
           <GridDumb
-            pixels={absurdlyThinGrid}
+            pixels={absurdlyTallGrid}
             editable={true}
             dragStart={onDragStart}
             onDrag={onDragged}

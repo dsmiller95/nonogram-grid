@@ -5,8 +5,8 @@ import { PixelDisplay } from '../models/PixelDisplay';
 export interface IProps {
   pixels: PixelDisplay[][];
   editable: boolean;
-  dragStart?: (col: number, row: number) => void;
-  onDrag?: (col: number, row: number) => void;
+  dragStart?: (row: number, col: number) => void;
+  onDrag?: (row: number, col: number) => void;
 }
 
 interface IState {}
@@ -66,9 +66,19 @@ export class GridDumb extends React.Component<IProps, IState> {
     }
   }
 
+  private rotateGrid<T>(grid: T[][]): T[][] {
+    const rotatedGrid: T[][] = grid?.[0].map(() => []);
+    grid.forEach((row) =>
+      row.forEach((value, colIndex) => {
+        rotatedGrid[colIndex].push(value);
+      })
+    );
+    return rotatedGrid;
+  }
+
   public render() {
     const isEditable = this.props.editable;
-    const grid = this.props.pixels;
+    const grid = this.rotateGrid(this.props.pixels);
 
     const colorClassForPosition = (col: number, row: number): string => {
       const pixelValue = grid[col][row];
@@ -77,13 +87,13 @@ export class GridDumb extends React.Component<IProps, IState> {
 
     const dragEnter = (col: number, row: number) => {
       if (this.isDragging) {
-        this.props.onDrag?.(col, row);
+        this.props.onDrag?.(row, col);
       }
     };
     const dragStart = (col: number, row: number) => {
       if (!isEditable || this.isDragging) return;
       this.isDragging = true;
-      this.props.dragStart?.(col, row);
+      this.props.dragStart?.(row, col);
     };
     return (
       <div className={styles.Grid} ref={(ref) => ref && (this.gridRef = ref)}>

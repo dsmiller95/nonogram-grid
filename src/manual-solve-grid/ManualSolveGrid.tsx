@@ -43,8 +43,8 @@ export class ManualSolveGrid extends React.Component<IProps, IState> {
     const pixels = this.state.currentPixels;
     const target = this.props.verificationPixels || this.props.goalPixels;
     const gridIsComplete = target
-      .map((col, colIndex) =>
-        col.map((value, rowIndex) => value === pixels[colIndex][rowIndex])
+      .map((row, rowIndex) =>
+        row.map((value, colIndex) => value === pixels[rowIndex][colIndex])
       )
       .flatMap((x) => x)
       .every((x) => x);
