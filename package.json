@@ -62,5 +62,8 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "dependencies": {
+    "nonogram-grid-example": "file:example"
+  }
 }

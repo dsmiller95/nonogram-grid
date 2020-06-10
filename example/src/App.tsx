@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { PixelDisplay, GridDumb, GridKeys } from 'nonogram-grid';
+import { PixelDisplay, GridDumb, GridKeys, ManualSolveGrid } from 'nonogram-grid';
 
 import 'nonogram-grid/dist/index.css';
 
@@ -129,6 +129,15 @@ const App = () => {
             onDrag={onDragged}
           ></GridDumb>
         </GridKeys>
+      </div>
+      <div className={'exampleSection'}>
+        <ManualSolveGrid
+          goalPixels={tallGrid}
+          transitionModel={[
+            PixelDisplay.Unknown,
+            PixelDisplay.Black,
+            PixelDisplay.White]}>
+        </ManualSolveGrid>
       </div>
       <div className={'doubleWideExample'}>
         <GridKeys pixels={absurdlyThinGrid}>

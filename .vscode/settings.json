@@ -1,5 +1,8 @@
 {
   "files.exclude": {
     "src/**/*.css": true
-  }
+  },
+  "editor.tabSize": 2,
+  "emmet.showAbbreviationSuggestions": false,
+  "emmet.showExpandedAbbreviation": "never"
 }
