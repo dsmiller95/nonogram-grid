@@ -78,10 +78,10 @@ export class GridDumb extends React.Component<IProps, IState> {
 
   public render() {
     const isEditable = this.props.editable;
-    const grid = this.rotateGrid(this.props.pixels);
+    const rotatedGrid = this.rotateGrid(this.props.pixels);
 
     const colorClassForPosition = (row: number, col: number): string => {
-      const pixelValue = grid[row][col];
+      const pixelValue = rotatedGrid[col][row];
       return this.pixelToColorClass(pixelValue);
     };
 
@@ -97,7 +97,7 @@ export class GridDumb extends React.Component<IProps, IState> {
     };
     return (
       <div className={styles.Grid} ref={(ref) => ref && (this.gridRef = ref)}>
-        {grid.map((col, collIndex) => (
+        {rotatedGrid.map((col, collIndex) => (
           <div key={collIndex} className={styles.row}>
             {col.map((_item, rowIndex) => (
               <div

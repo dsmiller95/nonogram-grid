@@ -92,10 +92,10 @@ const App = () => {
     [PixelDisplay.Black, PixelDisplay.Black],
     [PixelDisplay.Black, PixelDisplay.Black]
   ];
-  const onDragStart = (col: number, row: number) => {
+  const onDragStart = (row: number, col: number) => {
     console.log(`Drag start row:${row} col:${col}`);
   };
-  const onDragged = (col: number, row: number) => {
+  const onDragged = (row: number, col: number) => {
     console.log(`Dragged on row:${row} col:${col}`);
   };
   return (
