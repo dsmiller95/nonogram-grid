@@ -8,6 +8,8 @@ export type IProps =
   | {
       pixels: PixelDisplay[][];
       cellSize?: number;
+      hideColKeys?: boolean;
+      hideRowKeys?: boolean;
     }
   | IKeysProps;
 
@@ -61,7 +63,14 @@ export class GridKeys extends React.Component<IProps, IState> {
           )
         )
       );
-      return { columns: keys.firstDimension, rows: keys.secondDimension };
+      return {
+        columns: this.props.hideColKeys
+          ? keys.firstDimension.map(() => [])
+          : keys.firstDimension,
+        rows: this.props.hideRowKeys
+          ? keys.secondDimension.map(() => [])
+          : keys.secondDimension,
+      };
     }
   }
 

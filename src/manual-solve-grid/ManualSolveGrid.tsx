@@ -8,9 +8,20 @@ import styles from './ManualSolveGrid.module.css';
 
 export interface IProps {
   initialPixels?: PixelDisplay[][];
+  /**
+   * The grid which will be used to render the keys from. This is also the grid
+   *  which will be used to verify to see if the nonogram is complete
+   */
   goalPixels: PixelDisplay[][];
+  /**
+   * The grid to be used to check against to see if the nonogram is solved
+   *  use this when the goal has uncertainty involved in it
+   */
+  verificationPixels?: PixelDisplay[][];
   transitionModel: PixelDisplay[];
   cellSize?: number;
+  hideColKeys?: boolean;
+  hideRowKeys?: boolean;
 }
 
 interface IState {
@@ -30,7 +41,8 @@ export class ManualSolveGrid extends React.Component<IProps, IState> {
 
   public render() {
     const pixels = this.state.currentPixels;
-    const gridIsComplete = this.props.goalPixels
+    const target = this.props.verificationPixels || this.props.goalPixels;
+    const gridIsComplete = target
       .map((col, colIndex) =>
         col.map((value, rowIndex) => value === pixels[colIndex][rowIndex])
       )
@@ -43,7 +55,12 @@ export class ManualSolveGrid extends React.Component<IProps, IState> {
           ((gridIsComplete && ' ' + styles.complete) || '')
         }
       >
-        <GridKeys pixels={this.props.goalPixels} cellSize={this.props.cellSize}>
+        <GridKeys
+          pixels={this.props.goalPixels}
+          cellSize={this.props.cellSize}
+          hideColKeys={this.props.hideColKeys}
+          hideRowKeys={this.props.hideRowKeys}
+        >
           <GridDumb
             pixels={pixels}
             editable
