@@ -1,6 +1,6 @@
 {
   "name": "nonogram-grid",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A grid to display or edit nonograms inside of",
   "author": "dsmiller95",
   "license": "MIT",
