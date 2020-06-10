@@ -7,7 +7,7 @@
   position: relative;
   &::after{
     pointer-events: none;
-    z-index: -100;
+    z-index: 0;
     content: "";
     position: absolute;
     width: 50vmin;
@@ -25,6 +25,7 @@
     display: flex;
     flex-grow: 1;
     flex-direction: column;
+    z-index: 10;
   }
   .col {
     border: 1px solid black;
