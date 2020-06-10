@@ -17,6 +17,7 @@
 
   &:after {
     content: "";
+    z-index: 10;
     position: absolute;
     top: -110%;
     left: -210%;
