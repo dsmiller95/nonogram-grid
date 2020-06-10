@@ -130,17 +130,19 @@ const App = () => {
           ></GridDumb>
         </GridKeys>
       </div>
-      <div className={'exampleSection'}>
+      <div className={'exampleManualSize'}>
         <ManualSolveGrid
           goalPixels={tallGrid}
           transitionModel={[
             PixelDisplay.Unknown,
             PixelDisplay.Black,
-            PixelDisplay.White]}>
+            PixelDisplay.White]}
+          cellSize={40}
+          >
         </ManualSolveGrid>
       </div>
-      <div className={'doubleWideExample'}>
-        <GridKeys pixels={absurdlyThinGrid}>
+      <div className={'exampleManualSize'}>
+        <GridKeys pixels={absurdlyThinGrid} cellSize={15}>
           <GridDumb
             pixels={absurdlyThinGrid}
             editable={true}

@@ -10,6 +10,7 @@ export interface IProps {
   initialPixels?: PixelDisplay[][];
   goalPixels: PixelDisplay[][];
   transitionModel: PixelDisplay[];
+  cellSize?: number;
 }
 
 interface IState {
@@ -42,7 +43,7 @@ export class ManualSolveGrid extends React.Component<IProps, IState> {
           ((gridIsComplete && ' ' + styles.complete) || '')
         }
       >
-        <GridKeys pixels={this.props.goalPixels}>
+        <GridKeys pixels={this.props.goalPixels} cellSize={this.props.cellSize}>
           <GridDumb
             pixels={pixels}
             editable
