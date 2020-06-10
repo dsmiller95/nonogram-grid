@@ -85,12 +85,12 @@ export class GridDumb extends React.Component<IProps, IState> {
       return this.pixelToColorClass(pixelValue);
     };
 
-    const dragEnter = (col: number, row: number) => {
+    const dragEnter = (row: number, col: number) => {
       if (this.isDragging) {
         this.props.onDrag?.(row, col);
       }
     };
-    const dragStart = (col: number, row: number) => {
+    const dragStart = (row: number, col: number) => {
       if (!isEditable || this.isDragging) return;
       this.isDragging = true;
       this.props.dragStart?.(row, col);
