@@ -80,8 +80,8 @@ export class GridDumb extends React.Component<IProps, IState> {
     const isEditable = this.props.editable;
     const grid = this.rotateGrid(this.props.pixels);
 
-    const colorClassForPosition = (col: number, row: number): string => {
-      const pixelValue = grid[col][row];
+    const colorClassForPosition = (row: number, col: number): string => {
+      const pixelValue = grid[row][col];
       return this.pixelToColorClass(pixelValue);
     };
 
@@ -103,17 +103,17 @@ export class GridDumb extends React.Component<IProps, IState> {
               <div
                 key={rowIndex}
                 className={
-                  styles.col + ' ' + colorClassForPosition(collIndex, rowIndex)
+                  styles.col + ' ' + colorClassForPosition(rowIndex, collIndex)
                 }
                 onMouseEnter={() => {
-                  dragEnter(collIndex, rowIndex);
+                  dragEnter(rowIndex, collIndex);
                 }}
                 onMouseDown={(event) => {
-                  dragStart(collIndex, rowIndex);
+                  dragStart(rowIndex, collIndex);
                   event.preventDefault();
                 }}
                 onTouchStart={() => {
-                  dragStart(collIndex, rowIndex);
+                  dragStart(rowIndex, collIndex);
                 }}
                 onMouseUp={() => {
                   this.isDragging = false;
