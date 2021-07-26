@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { PixelDisplay, GridDumb, GridKeys } from 'nonogram-grid';
+import { PixelDisplay, GridDumb, GridKeys, ManualSolveGrid, gridFromString } from 'nonogram-grid';
 
 import 'nonogram-grid/dist/index.css';
 
@@ -50,14 +50,14 @@ const App = () => {
     ]
   ];
 
-  const thinGrid = [
+  const tallGrid = [
     [PixelDisplay.Black],
     [PixelDisplay.White],
     [PixelDisplay.White],
     [PixelDisplay.Black],
     [PixelDisplay.Black]
   ];
-  const tallGrid = [
+  const thinGrid = [
     [
       PixelDisplay.White,
       PixelDisplay.Black,
@@ -66,7 +66,7 @@ const App = () => {
       PixelDisplay.Black
     ]
   ];
-  const absurdlyThinGrid = [
+  const absurdlyTallGrid = [
     [PixelDisplay.Black, PixelDisplay.Black],
     [PixelDisplay.White, PixelDisplay.Black],
     [PixelDisplay.White, PixelDisplay.Black],
@@ -92,10 +92,10 @@ const App = () => {
     [PixelDisplay.Black, PixelDisplay.Black],
     [PixelDisplay.Black, PixelDisplay.Black]
   ];
-  const onDragStart = (col: number, row: number) => {
+  const onDragStart = (row: number, col: number) => {
     console.log(`Drag start row:${row} col:${col}`);
   };
-  const onDragged = (col: number, row: number) => {
+  const onDragged = (row: number, col: number) => {
     console.log(`Dragged on row:${row} col:${col}`);
   };
   return (
@@ -104,16 +104,6 @@ const App = () => {
         <GridKeys pixels={mainGrid}>
           <GridDumb
             pixels={mainGrid}
-            editable={true}
-            dragStart={onDragStart}
-            onDrag={onDragged}
-          ></GridDumb>
-        </GridKeys>
-      </div>
-      <div className={'exampleSection'}>
-        <GridKeys pixels={thinGrid}>
-          <GridDumb
-            pixels={thinGrid}
             editable={true}
             dragStart={onDragStart}
             onDrag={onDragged}
@@ -130,15 +120,53 @@ const App = () => {
           ></GridDumb>
         </GridKeys>
       </div>
-      <div className={'doubleWideExample'}>
-        <GridKeys pixels={absurdlyThinGrid}>
+      <div className={'exampleSection'}>
+        <GridKeys
+          pixels={thinGrid}
+          hideRowKeys={true}>
           <GridDumb
-            pixels={absurdlyThinGrid}
+            pixels={thinGrid}
             editable={true}
             dragStart={onDragStart}
             onDrag={onDragged}
           ></GridDumb>
         </GridKeys>
+      </div>
+      <div className={'exampleManualSize'}>
+        <ManualSolveGrid
+          goalPixels={thinGrid}
+          transitionModel={[
+            PixelDisplay.Unknown,
+            PixelDisplay.Black,
+            PixelDisplay.White]}
+          cellSize={40}
+          >
+        </ManualSolveGrid>
+      </div>
+      <div className={'exampleManualSize'}>
+        <GridKeys pixels={absurdlyTallGrid} cellSize={15}>
+          <GridDumb
+            pixels={absurdlyTallGrid}
+            editable={true}
+            dragStart={onDragStart}
+            onDrag={onDragged}
+          ></GridDumb>
+        </GridKeys>
+      </div>
+      <div className={'exampleManualSize'}>
+        <ManualSolveGrid
+          goalPixels={gridFromString(`
+          XOOXX
+          `)}
+          verificationPixels={gridFromString(`
+          ---X-`)}
+          transitionModel={[
+            PixelDisplay.Unknown,
+            PixelDisplay.Black,
+            PixelDisplay.White]}
+          cellSize={25}
+          hideColKeys={true}>
+        </ManualSolveGrid>
       </div>
     </div>
   );

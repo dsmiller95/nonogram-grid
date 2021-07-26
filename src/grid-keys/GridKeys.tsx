@@ -7,11 +7,15 @@ import { PixelDisplay } from '../models/PixelDisplay';
 export type IProps =
   | {
       pixels: PixelDisplay[][];
+      cellSize?: number;
+      hideColKeys?: boolean;
+      hideRowKeys?: boolean;
     }
   | IKeysProps;
 
 interface IKeysProps {
   keys: IKeys;
+  cellSize?: number;
 }
 export interface IKeys {
   rows: number[][];
@@ -49,8 +53,8 @@ export class GridKeys extends React.Component<IProps, IState> {
       return this.props.keys;
     } else {
       const keys = generateKey(
-        this.props.pixels.map((col) =>
-          col.map(
+        this.props.pixels.map((row) =>
+          row.map(
             (item) =>
               !!(
                 item === PixelDisplay.Black ||
@@ -59,7 +63,14 @@ export class GridKeys extends React.Component<IProps, IState> {
           )
         )
       );
-      return { columns: keys.firstDimension, rows: keys.secondDimension };
+      return {
+        rows: this.props.hideRowKeys
+          ? keys.firstDimension.map(() => [])
+          : keys.firstDimension,
+        columns: this.props.hideColKeys
+          ? keys.secondDimension.map(() => [])
+          : keys.secondDimension,
+      };
     }
   }
 
@@ -91,21 +102,24 @@ export class GridKeys extends React.Component<IProps, IState> {
     );
     const totalCols = columnsReversed.length + rowSize;
     const totalRows = rowsReversed.length + colSize;
-    const { dimensions } = this.state;
-    const minDimension = Math.min(
-      dimensions.width / totalCols,
-      dimensions.height / totalRows
-    );
+    let cellSize = this.props.cellSize;
+    if (!cellSize) {
+      const { dimensions } = this.state;
+      cellSize = Math.min(
+        dimensions.width / totalCols,
+        dimensions.height / totalRows
+      );
+    }
     return (
       <div
         className={styles.keysGrid}
         style={{
           gridTemplateColumns: `repeat(${
             columnsReversed.length + rowSize
-          }, ${minDimension}px)`,
+          }, ${cellSize}px)`,
           gridTemplateRows: `repeat(${
             rowsReversed.length + colSize
-          }, ${minDimension}px)`,
+          }, ${cellSize}px)`,
         }}
       >
         {columnsWithIndexes.map((cell) => (
